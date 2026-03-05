@@ -1,0 +1,15 @@
+ImunoTech Bot - Assistente Zé Gotinha
+
+Projeto focado em informar o cidadão sobre o calendário de vacinação e coberturas vacinais brasileiras.
+
+COMO USAR:
+1. Procure pelo bot no Telegram: `@Gotinha_bot`
+2. Envie o comando `/start` para começar.
+   
+Se o bot não estiver interagindo, é sinal de que a máquina local de funcionamento está desligada no momento. 
+
+ 🛠️ Tecnologias
+**Linguagem:** Python
+* **Interface:** Telegram 
+* **Gestão:** Jira
+* **Versionamento:** Git
