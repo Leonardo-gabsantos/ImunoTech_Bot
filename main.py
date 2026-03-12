@@ -16,9 +16,11 @@ def start(msg: telebot.types.Message):
     
     
     btn_inicio = types.KeyboardButton('Início')
+    btn_vacinas = types.KeyboardButton('Vacinas')
     btn_help = types.KeyboardButton('Help')
     
     markup.add(btn_inicio)
+    markup.add(btn_vacinas)
     markup.add(btn_help)
 
     bot.send_message(msg.chat.id, 'Olá, sou o bot gotinha a sua disposição! Clique no botão abaixo para começar.', reply_markup=markup)
@@ -27,6 +29,10 @@ def start(msg: telebot.types.Message):
 @bot.message_handler(func=lambda msg: msg.text == "Início")
 def resposta_inicio(msg):
     bot.reply_to(msg, "Você voltou ao início! Como posso te ajudar com as vacinas hoje?")
+    
+@bot.message_handler(func=lambda msg: msg.text == "Vacinas")
+def resposta_inicio(msg):
+    bot.reply_to(msg, "Para saber as informações sobre as vacinas disponíveis, me informe a sua idade: ")
 
 @bot.message_handler(func=lambda msg: msg.text == "Help")
 def resposta_inicio(msg):
