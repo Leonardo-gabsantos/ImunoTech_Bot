@@ -1,5 +1,6 @@
 import telebot
 import os
+from datetime import datetime
 from dotenv import load_dotenv
 from telebot import types
 
@@ -22,39 +23,46 @@ def start(msg: telebot.types.Message):
 def resposta_inicio(msg):
     bot.reply_to(msg, "Você voltou ao início! Como posso te ajudar?")
 
-# --- ALTERAÇÃO AQUI: SOLICITA A IDADE ---
 @bot.message_handler(func=lambda msg: msg.text == "Vacinas")
-def pedir_idade(msg):
-    # Enviamos a pergunta e dizemos qual função deve processar a resposta
-    sent_msg = bot.reply_to(msg, "Para saber as informações sobre as vacinas, digite apenas o número da sua idade da pessoa que você quer saber as informações:")
-    bot.register_next_step_handler(sent_msg, processar_idade)
+def pedir_data_nascimento(msg):
+    # Aqui, pede a data de nascimento
+    sent_msg = bot.reply_to(msg, "Para saber as informações sobre as vacinas, digite a **data de nascimento** (ex: 25/05/1998):")
+    bot.register_next_step_handler(sent_msg, processar_data)
 
-# --- NOVA FUNÇÃO: PROCESSA E DESIGNA A FAIXA ETÁRIA ---
-def processar_idade(msg):
-    idade_texto = msg.text
+def processar_data(msg):
+    data_texto = msg.text
     
-    if not idade_texto.isdigit():
-        sent_msg = bot.reply_to(msg, "Por favor, digite apenas números (ex: 25). Tente clicar em 'Vacinas' novamente.")
-        return
+    try:
+        #converter o texto para um objeto de data
+        data_nascimento = datetime.strptime(data_texto, "%d/%m/%Y")
+        hoje = datetime.now()
+        
+        #calcular a idade
+        idade = hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))
 
-    idade = int(idade_texto)
-    faixa_etaria = ""
+        if idade < 0:
+            bot.reply_to(msg, "A data de nascimento não pode ser no futuro! Tente novamente clicando em 'Vacinas'.")
+            return
 
-    # Lógica de categorização
-    if idade < 1:
-        faixa_etaria = "Recém-nascidos e Bebês (0 a 11 meses)"
-    elif 1 <= idade <= 12:
-        faixa_etaria = "Criança"
-    elif 13 <= idade <= 17:
-        faixa_etaria = "Adolescente"
-    elif 18 <= idade <= 59:
-        faixa_etaria = "Adulto"
-    else:
-        faixa_etaria = "Idoso"
+        
+        if idade < 1:
+            faixa_etaria = "Recém-nascidos e Bebês (0 a 11 meses)"
+        elif 1 <= idade <= 12:
+            faixa_etaria = "Criança"
+        elif 13 <= idade <= 17:
+            faixa_etaria = "Adolescente"
+        elif 18 <= idade <= 59:
+            faixa_etaria = "Adulto"
+        else:
+            faixa_etaria = "Idoso"
 
-    # Aqui você já tem a variável 'faixa_etaria' pronta para a raspagem futura
-    bot.reply_to(msg, f"Identifiquei que a pessoa se enquadra como: {faixa_etaria}.\n\n"
-                      "Em breve, trarei as vacinas específicas para você via raspagem de dados!")
+        bot.reply_to(msg, f"Data confirmada! Você tem {idade} anos.\n"
+                          f"Identifiquei que a pessoa se enquadra como: **{faixa_etaria}**.\n\n"
+                          "Em breve, trarei as vacinas específicas para você!")
+                          
+    except ValueError:
+        
+        bot.reply_to(msg, "Formato de data inválido! Por favor, use o padrão **DD/MM/AAAA**. Clique em 'Vacinas' para tentar de novo.")
 
 @bot.message_handler(func=lambda msg: msg.text == "Help")
 def resposta_help(msg):
