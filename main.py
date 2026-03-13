@@ -26,7 +26,7 @@ def resposta_inicio(msg):
 @bot.message_handler(func=lambda msg: msg.text == "Vacinas")
 def pedir_data_nascimento(msg):
     # Aqui, pede a data de nascimento
-    sent_msg = bot.reply_to(msg, "Para saber as informações sobre as vacinas, digite a **data de nascimento** (ex: 25/05/1998):")
+    sent_msg = bot.reply_to(msg, "Para verificar as vacinas recomendadas, informe a data de nascimento da pessoa no formato DD/MM/AAAA.")
     bot.register_next_step_handler(sent_msg, processar_data)
 
 def processar_data(msg):
@@ -56,9 +56,9 @@ def processar_data(msg):
         else:
             faixa_etaria = "Idoso"
 
-        bot.reply_to(msg, f"Data confirmada! Você tem {idade} anos.\n"
-                          f"Identifiquei que a pessoa se enquadra como: **{faixa_etaria}**.\n\n"
-                          "Em breve, trarei as vacinas específicas para você!")
+        bot.reply_to(msg, f"Data confirmada com sucesso! ✅ \n\nA pessoa tem {idade} anos e pertence ao grupo: {faixa_etaria}.\n"
+                          f"Vou listar as vacinas recomendadas para esta faixa etária em São José dos Campos\n\n"
+                          f"⌛Aguarde um instante enquanto eu busco as informações...")
                           
     except ValueError:
         
