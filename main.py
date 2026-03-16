@@ -17,7 +17,7 @@ def start(msg: telebot.types.Message):
     btn_help = types.KeyboardButton('Help')
     markup.add(btn_inicio, btn_vacinas, btn_help)
 
-    bot.send_message(msg.chat.id, 'Olá, sou o bot Gotinha! Clique no botão abaixo para começar.', reply_markup=markup)
+    bot.send_message(msg.chat.id, 'Olá, sou o seu assistente virtual! Selecione uma opção abaixo.', reply_markup=markup)
 
 @bot.message_handler(func=lambda msg: msg.text == "Início")
 def resposta_inicio(msg):
@@ -66,6 +66,6 @@ def processar_data(msg):
 
 @bot.message_handler(func=lambda msg: msg.text == "Help")
 def resposta_help(msg):
-    bot.reply_to(msg, "Como posso te ajudar?")
+    bot.reply_to(msg, "Acesse https://LinkDoSite para mais informações sobre vacinas e imunização em São José dos Campos.")
 
 bot.infinity_polling()
